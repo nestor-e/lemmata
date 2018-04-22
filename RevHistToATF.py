@@ -1,18 +1,34 @@
-from bs4 import BeautifulSoup as bSoup
 import os
 import re
+from bs4 import BeautifulSoup as bSoup
 from operator import itemgetter
+import sys
 
-revLine = re.compile(r"^\d{4}-\d{2}-\d{2}")
+revLine = re.compile(r"\d{4}-\d{2}-\d{2}")
+tabLine = re.compile(r"&P\d{6}")
+imbededLemDetect = re.compile(r"(\S)#lem:")
+imbededTxtDetect = re.compile(r"(;[^;\n\r]*?)(\d+\.)")
+imbededTxtDetect2 = re.compile(r"(#lem: \S+)(\d+\.)")
 lemLine  = re.compile(r"^#lem:")
 
+def insertNewline(match):
+    return "\n" + match.group(0)
+
+def unEmbed1(match):
+    return match.group(1) + "\n#lem:"
+
+def unEmbed2(match):
+    return match.group(1) + "\n" + match.group(2)
 
 def convertFile(dir, fName, outputStream):
-    lines = []
     with open(dir + fName, 'r', encoding='utf-8') as src:
-        htmlRep = bSoup(src, 'html.parser')
-        for line in htmlRep.stripped_strings:
-            lines.append(line)
+        text = bSoup(src, 'html.parser').get_text()
+    text = revLine.sub(insertNewline, text)
+    text = tabLine.sub(insertNewline, text)
+    text = imbededLemDetect.sub(unEmbed1, text)
+    text = imbededTxtDetect.sub(unEmbed2, text)
+    text = imbededTxtDetect2.sub(unEmbed2, text)
+    lines = text.splitlines()
 
     revData = []
     revStart = -1
