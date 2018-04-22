@@ -1,0 +1,22 @@
+  RevHistToATF.py looks over the scrapped revision history web pages, and combines
+them into an ATF formatted file.
+
+    AtfToLemmaList.py provides two functions.  First it goes over an ATF file and
+tries to make as many associations as it can between individual lemmata and the
+token in the text it represents, based on the position of the token in the line.
+Then it creates two output files.  The first is a list of the text part of each
+text-lemmata pair, in a format close enough to ATF for SNER to operate on it, and
+with the line on which each token was placed recorded.  The second is a tab separated
+CSV file, each line containing a text-lemmmata pair, and the line on which it was
+placed in the first file.
+
+SNER is then run on the generated ATF-esque file
+(See 490-DataParser/SnerInstructions.txt for necessary modifications)
+
+  Finally LemCompareV2.py looks at each text-lemmata pair in the second file
+from AtfToLemmaList.py and looks up how SNER classified that text item using the
+prediction output files from SNER (target_atf.KEY and atf_prediction.RT). It is
+easy to find the prediction for a particular token, since each is on its own line
+in the ATF, and SNER records the line it got each token from in the target_atf.KEY
+file.  The script outputs counts for how many tokens SNER classified correctly
+and incorrectly.

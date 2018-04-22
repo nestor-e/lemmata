@@ -1,0 +1,5 @@
+Total tokens checked  : 438704  : 100.000%
+True Positive         : 21426   :   4.884%
+True Negative         : 381696  :  87.005%
+False Positive        : 7125    :   1.624%
+False Negative        : 28457   :   6.487%

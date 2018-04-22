@@ -44,11 +44,11 @@ def lemGet(txtLine, lemLine):
             print()
     else:
         for i in range(len(txtTokens)):
-            out.append( (txtTokens[i], lemTokens[i]) )
+            out.append( {'txt' : txtTokens[i], 'lem' : lemTokens[i]} )
     return out
 
-def main(inFile, outFile):
-    # Set of 2-Tuples (txt, lem)
+def main(inFile, outFile, snerFile):
+    # {txt , lem, pos}
     lemmata = []
     with open(inFile, 'r', encoding='utf-8') as src:
         lastLine = next(src).strip()
@@ -58,8 +58,17 @@ def main(inFile, outFile):
             lastLine = line
 
     print(len(lemmata), "lemmata recovered")
+
+    with open(snerFile, 'w') as sOut:
+        print("&P101001", file=sOut)
+        pos = 1
+        for lem in lemmata:
+            lem['pos'] = pos
+            pos += 1
+            print("1. {}".format(lem['txt']), file=sOut)
+
     with open(outFile, 'w') as out:
         for lem in lemmata:
-            print("{}\t{}".format(lem[0], lem[1]), file=out)
+            print("{}\t{}\t{}".format(lem['pos'], lem['txt'], lem['lem']), file=out)
 
-main("lemmata.atf", "lemmata.csv")
+main("lemmata.atf", "lemmata.csv", "toSner.atf")
