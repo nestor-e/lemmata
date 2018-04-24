@@ -57,18 +57,23 @@ def main(inFile, outFile, snerFile):
                 lemmata += lemGet(lastLine.strip(), line.strip())
             lastLine = line
 
-    print(len(lemmata), "lemmata recovered")
+    seenWords = set()
 
     with open(snerFile, 'w') as sOut:
         print("&P101001", file=sOut)
         pos = 1
         for lem in lemmata:
-            lem['pos'] = pos
-            pos += 1
-            print("1. {}".format(lem['txt']), file=sOut)
+            if(lem['txt'] not in seenWords):
+                lem['pos'] = pos
+                pos += 1
+                print("1. {}".format(lem['txt']), file=sOut)
+                seenWords.add(lem['txt'])
 
     with open(outFile, 'w') as out:
         for lem in lemmata:
-            print("{}\t{}\t{}".format(lem['pos'], lem['txt'], lem['lem']), file=out)
+            if 'pos' in lem:
+                print("{}\t{}\t{}".format(lem['pos'], lem['txt'], lem['lem']), file=out)
+
+    print(len(seenWords), "lemmata recovered")
 
 main("lemmata.atf", "lemmata.csv", "toSner.atf")

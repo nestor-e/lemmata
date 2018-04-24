@@ -57,12 +57,12 @@ def main(lemFile, snerIdxFile, snerResFile):
                     falseNegative += 1
                 else :
                     trueNegative += 1
-    print(total, "total tokens checked")
-    print(undecided, "undecided") # SNER split into 2 tokens, one a name, one not
-    print(truePositive, ": True Positive")
-    print(trueNegative, ": True Negative")
-    print(falsePositive, ": False Positive")
-    print(falseNegative, ": False Negative")
+    print("Total tokens   : {:6d} : 100.000%".format(total) )
+    print("Undecided      : {:6d} : {:7.3f}%".format(undecided, undecided / total * 100.0) )
+    print("True Positive  : {:6d} : {:7.3f}%".format(truePositive, truePositive / total * 100.0) )
+    print("True Negative  : {:6d} : {:7.3f}%".format(trueNegative, trueNegative / total * 100.0) )
+    print("False Positive : {:6d} : {:7.3f}%".format(falsePositive, falsePositive / total * 100.0) )
+    print("False Negative : {:6d} : {:7.3f}%".format(falseNegative, falseNegative / total * 100.0) )
 
 
 main("lemmata.csv", "snerResults/target_atf.KEY", "snerResults/atf_prediction.RT")
