@@ -1,5 +1,16 @@
+Test 1 -- All tokens in identified in RevHistory
+
 Total tokens checked  : 438704  : 100.000%
 True Positive         : 21426   :   4.884%
 True Negative         : 381696  :  87.005%
 False Positive        : 7125    :   1.624%
 False Negative        : 28457   :   6.487%
+
+
+Test 2 --- Duplicate tokens removed
+Total tokens   :  30772 : 100.000%
+Undecided      :      0 :   0.000%
+True Positive  :   3590 :  11.666%
+True Negative  :  17233 :  56.002%
+False Positive :   2162 :   7.026%
+False Negative :   7787 :  25.305%
