@@ -1,4 +1,6 @@
+#arguments: input ATF file, output lemmata csv, output psudo-atf
 import re
+import sys
 
 verbose = False
 
@@ -76,4 +78,5 @@ def main(inFile, outFile, snerFile):
 
     print(len(seenWords), "lemmata recovered")
 
-main("lemmata.atf", "lemmata.csv", "toSner.atf")
+if __name__ == "__main__":
+	main(sys.argv[1], sys.argv[2], sys.argv[3])

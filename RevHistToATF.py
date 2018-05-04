@@ -1,3 +1,5 @@
+# Args : Output File, data directory
+
 import os
 import re
 from bs4 import BeautifulSoup as bSoup
@@ -68,5 +70,5 @@ def main(targetFile, dataDir):
     fOut.close()
     print("{} / {} tablet with lemmata".format(lemCount, tabs))
 
-
-main("lemmata.atf" , "./HistoricalData/")
+if __name__ == "__main__":
+	main(sys.argv[1] , sys.argv[2])

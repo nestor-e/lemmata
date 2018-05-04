@@ -1,3 +1,5 @@
+#arguments : lemmata csv, SNER target_atf.Key, SNER atf_prediction.RT
+import sys
 
 nameMarkers = ['PN', 'GN']
 
@@ -65,4 +67,4 @@ def main(lemFile, snerIdxFile, snerResFile):
     print("False Negative : {:6d} : {:7.3f}%".format(falseNegative, falseNegative / total * 100.0) )
 
 
-main("lemmata.csv", "snerResults/target_atf.KEY", "snerResults/atf_prediction.RT")
+main(sys.argv[1], sys.argv[2], sys.argv[3])

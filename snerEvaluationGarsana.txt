@@ -1,0 +1,6 @@
+Total tokens   :   8601 : 100.000%
+Undecided      :      0 :   0.000%
+True Positive  :    304 :   3.534%
+True Negative  :   6775 :  78.770%
+False Positive :    609 :   7.081%
+False Negative :    913 :  10.615%
