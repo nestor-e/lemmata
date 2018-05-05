@@ -125,6 +125,13 @@ def main(jsonFile, attestFile):
                 grid['MISS'][lemLabel] += 1
                 lemTotal += 1
 
+    for tabKey in lData:
+        for loc in lData[tabKey]:
+            if (tabKey not in aData) or (loc not in aData[tabKey]):
+                for label in lData[tabKey][loc]:
+                    grid['MISS'][label] += 1
+                    lemTotal += 1
+
     print(lemTotal, attestTotal)
     print(grid)
 
