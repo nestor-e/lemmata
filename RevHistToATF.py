@@ -61,11 +61,15 @@ def main(targetFile, dataDir):
     fOut = open(targetFile, 'w', encoding='utf-8')
     lemCount = 0
     tabs = 0
+    rem = len(os.listdir(dataDir))
     for fName in os.listdir(dataDir):
         tabs += 1
         hasLem = convertFile(dataDir, fName, fOut)
         if hasLem :
             lemCount += 1
+        rem -= 1
+        if rem % 1000 == 0:
+            print(rem, "remaining")
         print(file=fOut)
     fOut.close()
     print("{} / {} tablet with lemmata".format(lemCount, tabs))

@@ -15,3 +15,11 @@ True Positive  :   3590 :  11.666%
 True Negative  :  17233 :  56.002%
 False Positive :   2162 :   7.026%
 False Negative :   7787 :  25.305%
+
+Test 3 --- Limited to tablets in garshana corpus
+Total tokens   :   8601 : 100.000%
+Undecided      :      0 :   0.000%
+True Positive  :    304 :   3.534%
+True Negative  :   6775 :  78.770%
+False Positive :    609 :   7.081%
+False Negative :    913 :  10.615%

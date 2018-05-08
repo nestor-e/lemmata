@@ -2,16 +2,37 @@ import csv
 import json
 import sys
 import re
-import editdistance
+import Levenshtein as Lv # package python-Levenshtein
 
+
+smbolBreaks = re.compile(r"\s|[-\[\]?]")
+
+def wrdCompare(target, word):
+    sylables = word.split("-")
+    minDistance = 2**30
+    for first in range(len(sylables)):
+        for last in range(first + 1, len(sylables) + 1):
+            comp = "-".join(sylables[first:last])
+            dist = Lv.distance(comp, target)
+            minDistance = min(minDistance, dist)
+    return minDistance
 
 #TODO : Better algorithim
 #Find substring of source most closely matching target
 def findMatch(target, source):
+    target = target.lower()
+    source = source.lower()
     options = source.split()
-    val = [editdistance.eval(target, opt) for opt in options]
+    val = [wrdCompare(target, opt) for opt in options]
     cI = val.index(min(val))
-    return options[cI]
+    dist = val[cI]
+    selected = options[cI]
+
+    if dist > len(selected) or len(selected) < 3 or selected == "[...]":
+        return None
+    else:
+        # print("{}: {} -> {}  (from {})".format(val[cI], target, options[cI], source))
+        return selected
 
 def getAttestData(attestFile):
     bParts = re.compile(r"(o|r|s)\.(i*)")
@@ -67,6 +88,7 @@ def create_corpus(jsonFile, aData, outFile):
         lineId = 0
         for tab in tabs:
             tabKey = tab['idCDLI']
+            # print('\n',tabKey)
             for side in tab['sides']:
                 lineLabel = side['side'].lower()
                 for colNum in range(len(side['content'])):
@@ -79,9 +101,11 @@ def create_corpus(jsonFile, aData, outFile):
                         cRow = {"Id BDTNS" : tabKey, "Id Line" : lineIdTex, "Part text" : "{}:{}".format(lineLabel, colNum + 1), "Text" : line['text']}
                         cWrite.writerow(cRow)
                         if (tabKey in aData) and (locId in aData[tabKey]):
+                            # print(locId)
                             for attest in aData[tabKey][locId]:
                                 attest['lineId'] = lineIdTex
                                 attest['texCDLI'] = findMatch(attest['texOrig'], line['text'])
+                                attest['wholeLine'] = line['text']
 
 
 def create_attest(aData, outFile):
@@ -93,8 +117,12 @@ def create_attest(aData, outFile):
         for tabKey in aData:
             for locID in aData[tabKey]:
                 for attest in aData[tabKey][locID]:
-                    if 'lineId' in attest:
-                        cRow = {"Id BDTNS" : tabKey, "Id Line" : attest['lineId'], "PN/GN as attested" : attest['texCDLI'], "PN or GN" : attest['label']}
+                    if 'lineId' in attest and attest['texCDLI'] != None:
+                        cRow = {"Id BDTNS" : tabKey,
+                                "Id Line" : attest['lineId'],
+                                "PN/GN as attested" : attest['texCDLI'],
+                                "PN or GN" : attest['label'],
+                                "Text" : attest['wholeLine']}
                         cWrite.writerow(cRow)
 
 
