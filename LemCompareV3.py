@@ -5,8 +5,9 @@ nameMarkers = ['PN', 'GN']
 
 def checkLem(lem):
     isName = False
-    for marker in nameMarkers:
-        if marker in lem:
+    labels = lem.split("|")
+    for label in labels:
+        if label in nameMarkers:
             isName = True
     return isName
 
@@ -43,7 +44,7 @@ def main(lemFile, snerIdxFile, snerResFile):
             total += 1
             parts = line.split('\t')
             loc = parts[0]
-            wrdSNER = wordMap.get(loc, [])  
+            wrdSNER = wordMap.get(loc, [])
             if parts[1] not in parts[1]:
                 print("{} -> {}".format(parts[1], wrdSNER))
             isName = checkLem(parts[2])
